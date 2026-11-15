@@ -316,6 +316,9 @@ def task_list(request):
         {"tasks": tasks},
     )
 
+def home(request):
+    return render(request, 'dashboard/home.html')
+
 
 
 

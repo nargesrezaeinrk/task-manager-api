@@ -13,11 +13,13 @@ from apps.dashboard.views import (
     change_password,
     complete_task,
     task_list,
+    home,
 )
 
 
 urlpatterns = [
-    path('', dashboard, name="dashboard"),
+    path('', home, name="home"),
+    path('dashboard/', dashboard, name="dashboard"),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('tasks/create/', create_task, name="create-task"),

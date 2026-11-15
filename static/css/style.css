@@ -1,21 +1,30 @@
 /* ---------- Base ---------- */
 
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    src: url("../fonts/PlusJakartaSans[wght].ttf") format("truetype");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fdf3f6;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background-color: #F8F9FC;
     color: #333;
+    font-weight: 400;
 }
 
 
 /* ---------- Navigation ---------- */
 
 .site-header {
-    background-color: #ffffff;
+    background-color: #263B56;
     border-bottom: 1px solid #e8dfe2;
 }
 
@@ -29,7 +38,7 @@ body {
 }
 
 .navbar-brand {
-    color: #333;
+    color: #FFFFFF;
     font-size: 20px;
     font-weight: 600;
     text-decoration: none;
@@ -42,7 +51,7 @@ body {
 }
 
 .navbar-links a {
-    color: #555;
+    color: #FFFFFF;
     text-decoration: none;
     font-size: 15px;
 }
@@ -61,7 +70,7 @@ body {
     padding: 0;
     font-family: inherit;
     font-size: 15px;
-    color: #555;
+    color: #FFFFFF;
     cursor: pointer;
 }
 
@@ -735,4 +744,13 @@ main {
     .profile-card {
         padding: 24px;
     }
+}
+
+.home-page {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
