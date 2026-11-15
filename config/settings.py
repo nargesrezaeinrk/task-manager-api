@@ -67,15 +67,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'fb.sqlite3'}",
-        conn_max_age=600,
-        ssl_require=not DEBUG,
-    )
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": os.environ.get(
+                "DB_ENGINE",
+                "django.db.backends.postgresql",
+            ),
+            "NAME": os.environ.get("DB_NAME"),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASSWORD"),
+            "HOST": os.environ.get("DB_HOST", "localhost"),
+            "PORT": os.environ.get("DB_PORT", "5432"),
+            "CONN_MAX_AGE": 600,
+        }
+    }
 
 AUTHENTICATION_BACKENDS = [
     "apps.users.backends.EmailBackend",    

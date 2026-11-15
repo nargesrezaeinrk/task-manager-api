@@ -293,7 +293,7 @@ def complete_task(request, pk):
     )
     
     if request.method=="POST":
-        task.status = Task.Status.COMPLETED,
+        task.status = Task.Status.COMPLETED
         task.save(update_fields=["status", "updated_at"])
         
         messages.success(
@@ -301,17 +301,7 @@ def complete_task(request, pk):
             "Task marked as completed.",    
         )
         
-        return redirect(
-            request,
-            "task-detail",
-            pk=task.pk,           
-        )
-    
-    return redirect(
-        request,
-        "task-detail",
-        pk=task.pk,           
-    )
+    return redirect("task-detail",pk=task.pk)
 
 
 @login_required

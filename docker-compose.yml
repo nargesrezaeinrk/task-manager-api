@@ -28,6 +28,8 @@ services:
     command: ./entrypoint.sh
     env_file:
       - .env
+    environment:
+      DB_HOST: db
     volumes:
         - staticfiles:/app/staticfiles
         - mediafiles:/app/media
