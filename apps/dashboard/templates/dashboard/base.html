@@ -15,8 +15,8 @@
 
     <header class="site-header">
         <nav class="navbar">
-            <a class="navbar-brand" href="{% url 'dashboard' %}">
-                Task Manager
+            <a class="navbar-brand" href="{% url 'home' %}">
+                Veysa
             </a>
 
             <div class="navbar-links">
@@ -36,11 +36,6 @@
                 <a href="{% url 'profile' %}">
                     Profile
                 </a>
-
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
 
                 {% else %}
                 <a href="{% url 'login' %}">

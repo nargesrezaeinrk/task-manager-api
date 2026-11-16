@@ -1,8 +1,24 @@
-{% extends "dashboard/base.html" %}
+﻿{% extends "dashboard/base.html" %}
 
 {% block content %}
     <div class="home-page">
-        <h1>Take control of your day.</h1>
-        <p>Organize your tasks, track your progress, and make every day count.</p>
+        <h1 class="hero-title">Take control of your day.</h1>
+        <p class="hero-description">Organize your tasks, track your progress, and make every day count.</p>
+
+        <div class="hero-actions">
+            <a href="{% url 'register' %}" class="hero-primary-btn">Get Started</a>
+
+            <a href="{% url 'login' %}" class="hero-secondary-btn">Sign In</a>
+        </div>
+
+        <a href="#features" class="scroll-down" aria-label="Scroll down">⌄</a>
+
+        <a href="#features" class="scroll-text">scroll down to explore</a>
     </div>
+
+    <section class="features-section" id="features">
+        <h2 class="feature-title">Make every day count.</h2>
+        <p class="feature-description">Everything you need to stay organized and productive.</p>
+    </section>
+
 {% endblock %}
