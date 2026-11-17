@@ -1,20 +1,41 @@
 {% extends "dashboard/base.html" %}
 
 {% block title %}
-    Login | Task Manager
+    Login | Veysa
 {% endblock %}
 
 {% block content %}
     <div class="auth-container">
-        <div class="auth-card">
-            <h1>Login</h1>
+        <div class="auth-layout">
+            
+            <div class="auth-card">
+                <h1>Welcome back</h1>
+                <p class="auth-description">
+                    Sign in to continue managing your tasks
+                </p>
 
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Login</button>
-            </form>
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Sign In</button>
+                </form>
+
+                <p class="auth-footer">
+                    Don't have an account?
+                    <a href="{% url 'register' %}">Register here</a>
+                </p>
+            </div>
+
+            <div class="auth-visual">
+                <div class="auth-visual-content">
+                    <h2>Make room for what matters.</h2>
+                    <p>
+                        Organize your tasks, focus on your priorities,
+                        and make every day count.
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
-
 {% endblock %}
