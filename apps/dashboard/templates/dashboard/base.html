@@ -12,44 +12,44 @@
 </head>
 
 <body>
-
-    <header class="site-header">
-        <nav class="navbar">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                Veysa
-            </a>
-
-            <div class="navbar-links">
-                {% if request.user.is_authenticated %}
-                <a href="{% url 'dashboard' %}">
-                    Dashboard
+    {% block navigation %}
+        <header class="site-header">
+            <nav class="navbar">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    Veysa
                 </a>
 
-                <a href="{% url 'create-task' %}">
-                    Create Task
-                </a>
+                <div class="navbar-links">
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
 
-                <a href="{% url 'task-list' %}">
-                    My Tasks
-                </a>
+                    <a href="{% url 'create-task' %}">
+                        Create Task
+                    </a>
 
-                <a href="{% url 'profile' %}">
-                    Profile
-                </a>
+                    <a href="{% url 'task-list' %}">
+                        My Tasks
+                    </a>
 
-                {% else %}
-                <a href="{% url 'login' %}">
-                    Login
-                </a>
+                    <a href="{% url 'profile' %}">
+                        Profile
+                    </a>
 
-                <a href="{% url 'register' %}">
-                    Register
-                </a>
-                {% endif %}
-            </div>
-        </nav>
-    </header>
+                    {% else %}
+                    <a href="{% url 'login' %}">
+                        Login
+                    </a>
 
+                    <a href="{% url 'register' %}">
+                        Register
+                    </a>
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
+    {% endblock %}
     <main>
         {% if messages %}
             {% for message in messages %}

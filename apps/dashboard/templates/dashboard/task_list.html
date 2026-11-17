@@ -1,71 +1,152 @@
-{% extends "dashboard/base.html" %}
+﻿{% extends "dashboard/base.html" %}
 
 {% block title %}
-    My Tasks | Task Manager
+    My Tasks | Veysa
 {% endblock %}
 
 {% block content %}
 
-    <div class="task-list-header">
-        <div>
-            <h1>My Tasks</h1>
-            <p>View and manage your tasks.</p>
-        </div>
+    <div class="task-page">
+        <!-- Sidebar -->
+        <aside class="task-sidebar">
+            <a href="{% url 'home' %}" class="sidebar-brand">Veysa</a>
 
-        <a href="{% url 'create-task' %}" class="primary-button">
-            Create Task
-        </a>
-    </div>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}"><span>⌂</span>Dashboard</a>
+                <a href="{% url 'task-list' %}"><span>▤</span>My Tasks</a>
+                <a href="{% url 'create-task' %}"><span>+</span>Create New Task</a>
+                <a href="{% url 'profile' %}"><span>○</span>Profile</a>
+            </nav>
+        </aside>
 
-    {% if tasks %}
+        <!-- Main content-->
+        <div class="task-main">
 
-    <div class="task-list-grid">
+            <!-- Top bar -->
+            <div class="task-topbar">
+                <button type="button" class="notification-button"
+                        aria-label="Notifications">
+                    ♧
+                </button>
 
-        {% for task in tasks %}
-
-        <article class="task-list-card">
-
-            <h2>
-                <a href="{% url 'task-detail' task.pk %}">
-                    {{ task.title }}
+                <a href="{% url 'profile' %}" class="task-profile">
+                    {% if request.user.avatar %}
+                    <img src="{{ request.user.avatar.url }}" alt="Profile picture">
+                    {% else %}
+                    <span class="profile-placeholder">
+                        {{ request.user.username|first|upper }}
+                    </span>
+                    {% endif %}
                 </a>
-            </h2>
-
-            <div class="task-list-meta">
-                <p>
-                    <strong>Status:</strong>
-                    {{ task.get_status_display }}
-                </p>
-
-                <p>
-                    <strong>Priority:</strong>
-                    {{ task.get_priority_display }}
-                </p>
-
-                {% if task.due_date %}
-                <p>
-                    <strong>Due:</strong>
-                    {{ task.due_date }}
-                </p>
-                {% endif %}
             </div>
 
-        </article>
+            <!-- Page heading -->
+            <div class="task-list-header">
+                <div>
+                    <h1>My Tasks</h1>
+                    <p>Keep track of what matters.</p>
+                </div>
 
-        {% endfor %}
+                <a href="{% url 'create-task' %}" class="create-task-button">
+                    <span>＋</span> Create New Task
+                </a>
+            </div>
+            
+            {% if tasks %}
 
+            <div class="task-content-layout">
+
+                <!-- Task cards -->
+                <section class="task-list-grid">
+
+                    {% for task in tasks %}
+
+                    <article class="task-list-card">
+
+                        <div class="task-card-top">
+                            <span class="priority-badge priority-{{ task.priority|lower }}">
+                               {{ task.get_priority_display }}
+                            </span>
+
+                            <div class="task-card-actions">
+                                <a href="{% url 'edit-task' task.pk %}"
+                                   aria-label="Edit task">✎</a>
+
+                                <a href="{% url 'delete-task' task.pk %}"
+                                   aria-label="Delete task">⌫</a>
+                            </div>
+                        </div>
+
+                        <h2>
+                            <a href="{% url 'task-detail' task.pk %}">{{ task.title }}</a>
+                        </h2>
+
+                        <p class="task-card-description">
+                            {{ task.description|default:"No description provided."|truncatewords:20 }}
+                        </p>
+
+                        <div class="task-card-details">
+                            <span class="status-badge status-{{ task.status|lower }}">
+                                {{ task.get_status_display }}
+                            </span>
+
+                            {% if task.due_date %}
+                            <span class="task-due-date">
+                                Due {{ task.due_date|date:"M d, Y" }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="task-card-footer">
+                            <span class="task-updated">
+                                Updated {{ task.updated_at|date:"M d, Y" }}
+                            </span>
+
+                            {% if task.status != "COMPLETED" %}
+                            <form method="post" action="{% url 'complete-task' task.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="done-button">Done</button>
+                            </form>
+                            {% else %}
+                            <span class="completed-label">Completed</span>
+                            {% endif %}
+                        </div>
+
+                    </article>
+
+                    {% endfor %}
+
+                </section>
+
+                <!-- Overdue section -->
+                <aside class="overdue-section">
+                    <h2>Overdue</h2>
+
+                    <div class="overdue-list">
+                        {% for task in tasks %}
+                            {% if task.due_date and task.due_date < now and task.status != "COMPLETED" %}
+                                <a href="{% url 'task-detail' task.pk %}"
+                                   class="overdue-item">
+                                    {{ task.title }}
+                                    <span>{{ task.due_date|date:"M d" }}</span>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </aside>
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <p>You don't have any tasks yet.</p>
+                <a href="{% url 'create-task' %}" class="create-task-button">
+                    ＋ Create your first task
+                </a>
+            </div>
+
+            {% endif %}
+
+        </div>
     </div>
-
-    {% else %}
-
-    <div class="empty-state">
-        <p>You don't have any tasks yet.</p>
-
-        <a href="{% url 'create-task' %}" class="primary-button">
-            Create your first task
-        </a>
-    </div>
-
-    {% endif %}
-
 {% endblock %}
