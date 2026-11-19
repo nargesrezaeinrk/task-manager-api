@@ -300,9 +300,13 @@ def complete_task(request, pk):
             request,
             "Task marked as completed.",    
         )
-        
-    return redirect("task-detail",pk=task.pk)
+        return redirect("task-detail",pk=task.pk)
 
+    return render(
+        request,
+        "dashboard/complete_task.html",
+        {"task": task}
+    )
 
 @login_required
 def task_list(request):

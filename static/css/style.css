@@ -872,6 +872,10 @@ main {
 /* Done button */
 
 .done-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     padding: 7px 14px;
     border: 1px solid #D5E3DA;
     border-radius: 20px;
@@ -922,10 +926,10 @@ main {
     color: #929BA9;
 }
 
-    .task-completed .priority-badge {
-        background-color: #D9DDE5;
-        color: #687386;
-    }
+.task-completed .priority-badge {
+    background-color: #D9DDE5;
+    color: #687386;
+}
 
 /*  ===========================
      Overdue section
@@ -992,6 +996,119 @@ main {
     margin: 0 0 20px;
     color: #64748B;
     font-size: 15px;
+}
+
+/*  ===========================
+     Complete Task Confirmation
+   =========================== */
+
+.complete-task-page {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.complete-task-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 36px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5EAF0;
+    border-radius: 14px;
+    text-align: center;
+}
+
+/* Confirmation Icon */
+
+.complete-task-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background-color: #E8EEF5;
+    color: #52789F;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* Text */
+
+.complete-task-card h1 {
+    margin: 0 0 12px;
+    color: #263B56;
+    font-size: 23px;
+}
+
+.complete-task-card p {
+    margin: 0;
+    color: #64748B;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.complete-task-card p strong {
+    color: #263B56;
+    font-weight: 600;
+}
+
+/* Actions */
+
+.complete-task-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.complete-task-actions form {
+    margin: 0;
+}
+
+.complete-confirm-button,
+.complete-cancel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Confirm */
+
+.complete-confirm-button {
+    background-color: #52789F;
+    color: #FFFFFF;
+    border: 1px solid #52789F;
+}
+
+.complete-confirm-button:hover {
+    background-color: #405F80;
+    border-color: #405F80;
+}
+
+/* Cancel */
+
+.complete-cancel-button {
+    background-color: #F1F4F8;
+    color: #40566F;
+    border: 1px solid #E1E7EF;
+}
+
+.complete-cancel-button:hover {
+    background-color: #E5EAF0;
+    border-color: #D5DEE8;
 }
 
 /*  ===========================
@@ -1162,9 +1279,28 @@ main {
 
 /* Completion Button */
 
-.task-detail-done {
+.task-detail-complete-link {
     width: 100%;
     margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 7px 14px;
+    border: 1px solid #D5E3DA;
+    border-radius: 20px;
+    background-color: #F0F6F2;
+    color: #548267;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.task-detail-complete-link:hover {
+    background-color: #E1EEE5;
+    border-color: #BBD3C3;
 }
 
 /* Task Detail Header Actions */
@@ -1719,5 +1855,21 @@ main {
 
     .task-content-layout {
         gap: 20px;
+    }
+
+    /* Complete task */
+
+    .complete-task-card {
+        padding: 28px 22px;
+    }
+
+    .complete-task-actions {
+        flex-direction: column;
+    }
+
+    .complete-task-actions form,
+    .complete-confirm-button,
+    .complete-cancel-button {
+        width: 100%;
     }
 }

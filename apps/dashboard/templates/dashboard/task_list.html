@@ -152,14 +152,11 @@
                         <div class="task-card-footer">
 
                             {% if task.status != "COMPLETED" %}
-                            <form method="post" action="{% url 'complete-task' task.pk %}">
-                                {% csrf_token %}
-                                <button type="submit" class="done-button">
-                                    Mark as Complete
-                                </button>
-                            </form>
+                                <a href="{% url 'complete-task' task.pk %}" class="done-button task-detail-done">
+                                    Mark as Completed
+                                </a>
                             {% else %}
-                            <span class="completed-label">✓ Completed</span>
+                                <span class="completed-label">✓ Completed</span>
                             {% endif %}
 
                         </div>

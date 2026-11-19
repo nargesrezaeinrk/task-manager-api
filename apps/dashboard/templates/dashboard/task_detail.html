@@ -104,12 +104,9 @@
                 </section>
 
                 {% if task.status != "COMPLETED" %}
-                    <form method="post" action="{% url 'complete-task' task.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="done-button task-detail-done">
+                    <a href="{% url 'complete-task' task.pk %}" class="task-detail-complete-link">
                             Mark as Completed
-                        </button>
-                    </form>
+                    </a>
                 {% endif %}
 
             </aside>

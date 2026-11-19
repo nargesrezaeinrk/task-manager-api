@@ -1,0 +1,42 @@
+﻿{% extends "dashboard/base.html" %}
+
+{% block title %}
+    Complete Task | Veysa
+{% endblock %}
+
+{% block content %}
+    <div class="complete-task-page">
+
+        <div class="complete-task-card">
+
+            <div class="complete-task-icon">
+                ✓
+            </div>
+
+            <h1>Complete this task?</h1>
+            <p>
+                Are you sure you want to mark
+                <strong>{{ task.title }}</strong>
+                as complete?
+            </p>
+
+            <div class="complete-task-actions">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="complete-confirm-button">
+                        Yes, Complete
+                    </button>
+                </form>
+
+                <a href="#" onclick="history.back(); return false;"
+                   class="complete-cancel-button">
+                    Cancel
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
