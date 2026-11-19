@@ -178,6 +178,7 @@ main {
     font-family: inherit;
     font-size: 16px;
     transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: text;
 }
 
 .auth-form input:focus {
@@ -1456,11 +1457,21 @@ main {
 /* Navnar */
 @media (max-width: 700px) {
     .navbar {
-        padding: 16px 20px;
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .navbar-brand {
+        font-size: 20px;
+        flex-shrink: 0;
     }
 
     .navbar-links {
-        gap: 12px;
+        gap: 10px;
+    }
+
+    .navbar-links a {
+        font-size: 12px;
     }
 
     /* Profile */
