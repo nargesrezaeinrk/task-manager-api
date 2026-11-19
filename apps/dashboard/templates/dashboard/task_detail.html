@@ -1,85 +1,119 @@
-{% extends "dashboard/base.html" %}
+﻿{% extends "dashboard/base.html" %}
 
 {% block title %}
-    {{ task.title }} | Task Manager
+    {{ task.title }} | Veysa
 {% endblock %}
 
 {% block content %}
 
     <div class="task-detail">
 
+        <!--Page header-->
         <div class="task-detail-header">
-            <h1>{{ task.title }}</h1>
-            <a href="{% url 'task-list' %}" class="secondary-button">
-                Back to My Tasks
-            </a>
-        </div>
+            <div>
+                <a href="{% url 'task-list' %}" class="task-back-link">
+                    ← Back to my tasks
+                </a>
 
-        <div class="task-detail-card">
+                <h1>{{ task.title }}</h1>
 
-            {% if task.description %}
-            <div class="task-detail-section">
-                <h2>Description</h2>
-                <p>{{ task.description }}</p>
-            </div>
-            {% endif %}
-
-            <div class="task-detail-section">
-                <h2>Task Information</h2>
-
-                <div class="task-detail-info">
-                    <p>
-                        <strong>Status:</strong>
-                        {{ task.get_status_display }}
-                    </p>
-
-                    <p>
-                        <strong>Priority:</strong>
+                <div class="task-list-badges">
+                    <span class="status-badge status-{{ task.status|lower }}">
                         {{ task.get_priority_display }}
-                    </p>
-
-                    {% if task.due_date %}
-                    <p>
-                        <strong>Due:</strong>
-                        {{ task.due_date }}
-                    </p>
-                    {% endif %}
-
-                    <p>
-                        <strong>Created:</strong>
-                        {{ task.created_at }}
-                    </p>
-
-                    <p>
-                        <strong>Last updated:</strong>
-                        {{ task.updated_at }}
-                    </p>
+                    </span>
                 </div>
             </div>
 
-            <div class="task-detail-actions">
-
-                <a href="{% url 'edit-task' task.pk %}" class="primary-button">
+            <div class="task-detail-header-actions">
+                <a href="{% url 'edit-task' task.pk %}"
+                   class="task-action-button edit-button">
                     Edit Task
                 </a>
 
-                <a href="{% url 'delete-task' task.pk %}" class="danger-button">
-                    Delete Task
+                <a href="{% url 'delete-task' task.pk %}"
+                   class="task-action-button delete-button">
+                    Delete
                 </a>
-
-                {% if task.status != "COMPLETED" %}
-                <form method="post" action="{% url 'complete-task' task.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="secondary-button">
-                        Mark as Completed
-                    </button>
-                </form>
-                {% endif %}
-
             </div>
-
         </div>
 
-    </div>
+        <!--Main content-->
+        <div class="task-detail-layout">
 
+            <!-- Main task content -->
+            <div class="task-detail-main">
+
+                <section class="task-detail-card">
+
+                    <div class="task-detail-section">
+                        <h2>Description</h2>
+
+                        <p>
+                            {{ task.description|default:"No description provided." }}
+                        </p>
+                    </div>
+
+                    <div class="task-detail-section">
+                        <h2>Labels</h2>
+
+                        <div class="task-detail-labels">
+
+                            {% for label in task.labels.all %}
+                            <span class="task-label"
+                                  style="--label-color: {{ label.color }};">
+                                {{ label.name }}
+                            </span>
+                            {% empty %}
+                            <p class="no-labels">
+                                No labels assigned to this task.
+                            </p>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+
+            <!--Task information-->
+            <aside class="task-detail-sidebar">
+
+                <section class="task-detail-card">
+                    <h2>Task Information</h2>
+
+                    <div class="task-detail-info">
+
+                        {% if task.due_date %}
+                        <div>
+                            <span>Due date</span>
+                            <p>{{ task.due_date|date:"M d, Y" }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <span>Created</span>
+                            <p>{{ task.created_at|date:"M d, Y" }}</p>
+                        </div>
+
+                        <div>
+                            <span>Last updated</span>
+                            <p>{{ task.updated_at|date:"M d, Y" }}</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                {% if task.status != "COMPLETED" %}
+                    <form method="post" action="{% url 'complete-task' task.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="done-button task-detail-done">
+                            Mark as Completed
+                        </button>
+                    </form>
+                {% endif %}
+
+            </aside>
+
+        </div>
+    </div>
 {% endblock %}

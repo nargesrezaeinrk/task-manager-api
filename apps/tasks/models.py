@@ -1,4 +1,5 @@
 from dataclasses import fields
+from email.policy import default
 from django.db import models
 from django.conf import settings
 
@@ -63,6 +64,8 @@ class Label(models.Model):
         on_delete = models.CASCADE,
         related_name = "labels",
     )
+
+    color = models.CharField(max_length=7, default="#7897B8")
 
     class Meta:
         constraints = [
