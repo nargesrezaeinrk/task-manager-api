@@ -660,12 +660,34 @@ main {
 
 .task-card-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
 }
 
+.task-card-heading {
+    min-width: 0;
+}
+
+.task-card-heading .task-updated {
+    display: block;
+    margin-top: 4px;
+}
+
+.task-card-top-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* Header separator */
+
+.task-card-divider {
+    height: 1px;
+    background-color: #E8EBF1;
+    margin: 16px 0;
+}
 
 /* Edit and delete actions */
 
@@ -702,7 +724,7 @@ main {
 /* Task title */
 
 .task-list-card h2 {
-    margin: 0 0 10px;
+    margin: 0;
     color: #263B56;
     font-size: 16px;
     font-weight: 600;
@@ -746,18 +768,18 @@ main {
 }
 
 .priority-high {
-    background-color: #F9E9E5;
-    color: #A85D4E;
+    background-color: #FFCDD2;
+    color: #B00020;
 }
 
 .priority-medium {
-    background-color: #F8F0E3;
-    color: #A67B38;
+    background-color: #FFE0B2;
+    color: #A34200;
 }
 
 .priority-low {
-    background-color: #E8EEF5;
-    color: #52789F;
+    background-color: #C8E6C9;
+    color: #176B35;
 }
 
 /* Status badges */
@@ -779,18 +801,52 @@ main {
 
 /* Due date */
 
-.task-card-details {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: auto;
+.task-due-date {
+    display: block;
+    margin-top: -8px;
+    color: #64748B;
+    font-size: 12px;
+}
+
+/* Task progress */
+
+.task-progress-section {
+    margin-top: 20px;
     margin-bottom: 18px;
 }
 
-.task-due-date {
-    color: #64748B;
+.task-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #697586;
     font-size: 12px;
+}
+
+.task-progress-bar {
+    height: 7px;
+    background-color: #E9EDF3;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.task-progress-fill {
+    height: 100%;
+    border-radius: 20px;
+}
+
+.progress-completed {
+    width: 100%;
+    background-color: #929BA9;
+}
+
+.progress-in-progress {
+    width: 50%;
+    background-color: #E99A32;
+}
+
+.progress-not-started {
+    width: 0%;
 }
 
 /* Card footer */
@@ -834,10 +890,42 @@ main {
 }
 
 .completed-label {
-    color: #548267;
+    color: #89919E;
     font-size: 12px;
     font-weight: 600;
 }
+
+/* Completed task appearance */
+
+.task-completed {
+    background-color: #EEF0F4;
+    border-color: #DDE1E8;
+}
+
+.task-completed .task-card-heading h2 a {
+    color: #687386;
+}
+
+.task-completed .task-card-description {
+    color: #7C8593;
+}
+
+.task-completed .task-card-divider {
+    background-color: #D9DDE5;
+}
+
+.task-completed .task-progress-bar {
+    background-color: #D9DDE5;
+}
+
+.task-completed .task-card-actions a {
+    color: #929BA9;
+}
+
+    .task-completed .priority-badge {
+        background-color: #D9DDE5;
+        color: #687386;
+    }
 
 /* ===========================
    Overdue Section
