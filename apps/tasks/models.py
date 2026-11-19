@@ -1,3 +1,4 @@
+from dataclasses import fields
 from django.db import models
 from django.conf import settings
 
@@ -44,5 +45,29 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    labels = models.ManyToManyField(
+        "Label",
+        blank=True,
+        related_name="tasks",    
+    )
+
     def __str__(self):
         return self.title
+    
+
+class Label(models.Model):
+    name = models.CharField(max_length=100)
+    
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete = models.CASCADE,
+        related_name = "labels",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = ["owner", "name"],
+                name = "unique_label_per_user"
+            )
+        ]
