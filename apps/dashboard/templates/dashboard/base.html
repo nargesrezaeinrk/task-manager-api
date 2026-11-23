@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'planner/css/planner.css' %}">
+    {% endblock %}
+
     <title>
         {% block title %}Task Manager{% endblock %}
     </title>
@@ -60,6 +64,8 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    {% block extra_js %}{% endblock %}
 
 </body>
 </html>

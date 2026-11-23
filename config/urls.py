@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/',include('apps.tasks.urls')),
     
     path('', include('apps.dashboard.urls')),
+    path('planner/', include('apps.planner.urls')),
 ]
 
 if settings.DEBUG:

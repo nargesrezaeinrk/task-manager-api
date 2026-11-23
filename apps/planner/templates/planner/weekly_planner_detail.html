@@ -1,0 +1,200 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}
+    Weekly Planner | Veysa
+{% endblock %}
+
+{% block navigation %}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'planner/css/planner.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="planner-layout">
+
+        {% include "dashboard/components/sidebar.html" %}
+
+        <div class="planner-main">
+
+            <!-- Header -->
+
+            <header class="planner-header">
+
+                <div>
+                    <h1>Weekly Planner</h1>
+                    <p>Plan your week, one day at a time.</p>
+                </div>
+
+                <div class="week-info">
+                    <span class="planner-created-date">
+                        Created on: {{ weekly_planner.created_at|date:"M d, Y" }}
+                    </span>
+
+                    <!-- Add New Week -->
+
+                    <form method="POST"
+                          action="{% url 'create_weekly_planner' %}"
+                          class="add-week-form">
+
+                        {% csrf_token %}
+
+                        <button type="submit" class="add-week-button">
+                            + Add New Week
+                        </button>
+
+                    </form>
+                </div>
+                
+            </header>
+
+
+            <!-- Week Navigation -->
+
+            <div class="week-navigation">
+
+                <div>
+                    {% if older_week %}
+                    <a href="{% url 'weekly_planner_detail' older_week.pk %}"
+                       class="navigation-button planner-guard-link">
+                        &larr; Previous Week
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if newer_week %}
+                    <a href="{% url 'weekly_planner_detail' newer_week.pk %}"
+                       class="navigation-button planner-guard-link">
+                        Next Week &rarr;
+                    </a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <!-- Planner Table -->
+
+            <form method="POST"
+                  action="{% url 'save_weekly_planner' weekly_planner.pk %}"
+                  id="planner-form">
+
+                {% csrf_token %}
+
+                <div class="planner-table-wrapper">
+
+                    <table class="planner-table">
+
+                        <thead>
+                            <tr>
+                                {% for day_code, day_label in days %}
+                                <th>{{ day_label }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for row in rows %}
+
+                            <tr>
+
+                                {% for cell in row.cells %}
+
+                                <td>
+
+                                    <div class="planner-cell">
+
+                                        <textarea name="cell_{{ cell.day }}_{{ cell.row_number }}"
+                                                  placeholder="Write your plans...">{{ cell.content }}</textarea>
+
+                                        {% if cell.updated_at %}
+                                        <span class="cell-updated-date">
+                                            Updated:
+                                            {{ cell.updated_at|date:"M d, Y H:i" }}
+                                        </span>
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                                {% endfor %}
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Save and Cancel -->
+
+                <div class="planner-actions">
+
+                    <button type="button"
+                            id="cancel-changes"
+                            class="cancel-button">
+                        Cancel Changes
+                    </button>
+
+                    <button type="submit"
+                            class="planner-button">
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Unsaved Changes Modal -->
+
+    <div class="planner-modal-overlay"
+         id="unsaved-modal"
+         hidden>
+
+        <div class="planner-modal">
+
+            <h2>Unsaved Changes</h2>
+
+            <p>
+                You have unsaved changes. What would you like to do?
+            </p>
+
+            <div class="planner-modal-actions">
+
+                <button type="button" id="save-and-continue">
+                    Save and Continue
+                </button>
+
+                <button type="button" id="discard-changes">
+                    Discard Changes
+                </button>
+
+                <button type="button" id="stay-on-page">
+                    Stay on This Week
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endblock %}
+
+    {% block extra_js %}
+    <script src="{% static 'planner/js/planner.js' %}" defer></script>
+{% endblock %}

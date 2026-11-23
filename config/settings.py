@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apps.users.apps.UsersConfig',
     'apps.tasks.apps.TasksConfig',
     'apps.dashboard.apps.DashboardConfig',
+    'apps.planner.apps.PlannerConfig',
 ]
 
 MIDDLEWARE = [

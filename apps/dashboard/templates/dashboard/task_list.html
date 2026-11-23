@@ -10,16 +10,7 @@
 
     <div class="task-page">
         <!-- Sidebar -->
-        <aside class="task-sidebar">
-            <a href="{% url 'home' %}" class="sidebar-brand">Veysa</a>
-
-            <nav class="sidebar-nav">
-                <a href="{% url 'dashboard' %}"><span>⌂</span>Dashboard</a>
-                <a href="{% url 'task-list' %}"><span>▤</span>My Tasks</a>
-                <a href="{% url 'create-task' %}"><span>+</span>Create New Task</a>
-                <a href="{% url 'profile' %}"><span>○</span>Profile</a>
-            </nav>
-        </aside>
+        {% include "dashboard/components/sidebar.html" %}
 
         <!-- Main content-->
         <div class="task-main">

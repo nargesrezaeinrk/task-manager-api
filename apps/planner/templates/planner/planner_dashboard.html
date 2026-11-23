@@ -1,0 +1,77 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}
+    Weekly Planner | Veysa
+{% endblock %}
+
+{% block navigation %}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'planner/css/planner.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="planner-layout">
+
+        {% include "dashboard/components/sidebar.html" %}
+
+        <div class="planner-main">
+
+            <header class="planner-header">
+                <div>
+                    <h1>Weekly Planner</h1>
+                    <p>Organize your weeks and keep track of your plans.</p>
+                </div>
+
+                <form method="POST" action="{% url 'create_weekly_planner' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="planner-button">
+                        + Add New Week
+                    </button>
+                </form>
+            </header>
+
+            <section class="planner-weeks">
+
+                {% for week in weekly_planners %}
+
+                <a href="{% url 'weekly_planner_detail' week.pk %}"
+                   class="planner-week-card">
+
+                    <div>
+                        <h3>Week {{ week.pk }}</h3>
+
+                        <p>
+                            Created on:
+                            {{ week.created_at|date:"M d, Y" }}
+                        </p>
+                    </div>
+
+                    <span class="week-arrow">&rarr;</span>
+
+                </a>
+
+                {% empty %}
+
+                <div class="empty-planner">
+                    <h3>No weeks created yet</h3>
+                    <p>Create your first weekly planner to get started.</p>
+
+                    <form method="POST"
+                          action="{% url 'create_weekly_planner' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="planner-button">
+                            + Create Your First Week
+                        </button>
+                    </form>
+                </div>
+
+                {% endfor %}
+
+            </section>
+
+        </div>
+
+    </div>
+{% endblock %}
