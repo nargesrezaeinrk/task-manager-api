@@ -59,6 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function openModal(action) {
 
+        if (!modal) {
+            return;
+        }
+
         pendingAction = action;
         modal.hidden = false;
 
@@ -69,7 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function closeModal() {
 
-        modal.hidden = true;
+        if (modal) {
+            modal.hidden = true;
+        }
+
         pendingAction = null;
 
     }
@@ -156,83 +163,108 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cancel Changes.
 
-    cancelButton.addEventListener("click", () => {
+    if (cancelButton) {
 
-        if (!hasUnsavedChanges()) {
-            return;
-        }
+        cancelButton.addEventListener("click", () => {
 
-        discardChanges();
+            if (!hasUnsavedChanges()) {
+                return;
+            }
 
-    });
+            discardChanges();
+
+        });
+
+    }
 
 
     // Save and Continue.
 
-    saveAndContinueButton.addEventListener("click", async () => {
+    if (saveAndContinueButton) {
 
-        if (!pendingAction || isSaving) {
-            return;
-        }
+        saveAndContinueButton.addEventListener("click", async () => {
 
-        isSaving = true;
-        saveAndContinueButton.disabled = true;
-
-        try {
-
-            const formData = new FormData(plannerForm);
-
-            const response = await fetch(plannerForm.action, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest",
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error("The planner could not be saved.");
+            if (!pendingAction || isSaving) {
+                return;
             }
 
-            const result = await response.json();
+            isSaving = true;
+            saveAndContinueButton.disabled = true;
 
-            if (!result.success) {
-                throw new Error("The planner could not be saved.");
+            try {
+
+                const formData = new FormData(plannerForm);
+
+                const response = await fetch(plannerForm.action, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error("The planner could not be saved.");
+                }
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error("The planner could not be saved.");
+                }
+
+                continueNavigation();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("Your changes could not be saved. Please try again.");
+
+            } finally {
+
+                isSaving = false;
+                saveAndContinueButton.disabled = false;
+
             }
 
-            continueNavigation();
+        });
 
-        } catch (error) {
-
-            console.error(error);
-
-            alert("Your changes could not be saved. Please try again.");
-
-        } finally {
-
-            isSaving = false;
-            saveAndContinueButton.disabled = false;
-
-        }
-
-    });
+    }
 
 
     // Discard Changes and Continue.
 
-    discardButton.addEventListener("click", () => {
+    if (discardButton) {
 
-        discardChanges();
-        continueNavigation();
+        discardButton.addEventListener("click", () => {
 
-    });
+            discardChanges();
+            continueNavigation();
+
+        });
+
+    }
 
 
     // Stay on This Week.
 
-    stayButton.addEventListener("click", () => {
+    if (stayButton) {
 
-        closeModal();
+        stayButton.addEventListener("click", () => {
+
+            closeModal();
+
+        });
+
+    }
+
+
+    // Normal Save Changes form submission.
+
+    plannerForm.addEventListener("submit", () => {
+
+        isSaving = true;
 
     });
 
@@ -241,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("beforeunload", (event) => {
 
-        if (hasUnsavedChanges()) {
+        if (!isSaving && hasUnsavedChanges()) {
 
             event.preventDefault();
             event.returnValue = "";
