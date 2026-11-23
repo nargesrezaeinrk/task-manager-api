@@ -95,12 +95,14 @@ def dashboard(request):
 @login_required
 def create_task(request):
     if request.method=="POST":
-        form = TaskForm(request.POST)
+        form = TaskForm(request.POST, user=request.user)
 
         if form.is_valid():
             task = form.save(commit=False)
             task.owner = request.user
             task.save()
+            form.save_m2m()
+            
             messages.success(
                 request,
                 "Task created successfully.",
@@ -108,7 +110,7 @@ def create_task(request):
             return redirect("dashboard")
     
     else:
-        form = TaskForm()
+        form = TaskForm(user=request.user)
     
     return render(
         request,

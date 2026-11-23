@@ -6,6 +6,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 from apps.tasks.models import Task
+from apps.tasks.models import Label
+
 
 User = get_user_model()
 
@@ -19,6 +21,7 @@ class TaskForm(forms.ModelForm):
             "status",
             "priority",
             "due_date",
+            "labels",
         )
         widgets = {
             "due_date": forms.DateTimeInput(
@@ -27,6 +30,14 @@ class TaskForm(forms.ModelForm):
                 },
             ),    
         }
+        
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
+        self.fields["labels"].queryset = Label.objects.filter(
+            owner = user
+        )
 
 
 class LoginForm(forms.Form):
