@@ -100,10 +100,10 @@ def save_weekly_planner(request, pk):
 
             if cell.content != new_content:
                 cell.content = new_content
-                cell.update_at = timezone.now()
+                cell.updated_at = timezone.now()
                 
                 cell.save(
-                    updated_fields=["content", "updated_at"]     
+                    update_fields=["content", "updated_at"]     
                 )
              
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
