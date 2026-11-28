@@ -5,9 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
-from apps.tasks.models import Task
-from apps.tasks.models import Label
-
+from apps.tasks.models import Label, Task
 
 User = get_user_model()
 
@@ -62,7 +60,7 @@ class RegistrationForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data["email"]
         
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError(
                 "A user with this email already exists."
             )
@@ -89,9 +87,10 @@ class RegistrationForm(forms.Form):
             and password_confirm
             and password != password_confirm 
         ):
-            raise forms.ValidationError(
-                "Passwords do not match."
-            )  
+            self.add_error(
+            "password_confirm",
+            "Passwords do not match.",
+            )
         
         return cleaned_data
     
@@ -127,11 +126,31 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
+            "username",
+            "email",
             "first_name",
             "last_name",
+            "phone_number",
             "avatar",
+            "mantra",
         )
         
+    def clean_email(self):
+        email = self.cleaned_data["email"]     
+
+        existing_user = User.objects.filter(
+            email__iexact=email
+        ).exclude(
+            pk=self.instance.pk
+        )
+        
+        if existing_user.exists():
+            raise forms.ValidationError(
+                "A user with this email already exists."  
+            )
+        
+        return email
+
 
 class ChangePasswordForm(forms.Form):
     current_password = forms.CharField(
@@ -150,7 +169,7 @@ class ChangePasswordForm(forms.Form):
     )
 
 
-    def __init__(self, *args, user=None,**kwargs):
+    def __init__(self, *args, user,**kwargs):
         super().__init__(*args, **kwargs)
         self.user=user
 
@@ -188,8 +207,9 @@ class ChangePasswordForm(forms.Form):
             and confirm_password
             and new_password != confirm_password
         ):
-            raise forms.ValidationError(
-                "The new passwords do not match."    
+            self.add_error(
+                "confirm_password",
+                "The new passwords do not match.",
             )
         
         return cleaned_data
