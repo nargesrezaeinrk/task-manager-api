@@ -12,7 +12,7 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . . 
+COPY --chown=django:django . .
 
 RUN chmod +x entrypoint.sh
 RUN chown -R django:django /app
